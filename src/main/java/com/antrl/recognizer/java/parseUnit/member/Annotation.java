@@ -17,8 +17,8 @@ public class Annotation extends CommonType {
 	public void addData(JavaParser.AnnotationContext ctx) {
 		System.out.println("INICIO ANOTACIÓN");
 
-		System.out.println(ctx.depth());
-		
+		System.out.println(ctx.depth()); //Profundidad en el arbol donde está la anotación, las que etan fuera de la clase son prof 4, de atributos 8, anotación dentro de otra es 12
+
 		System.out.println(ctx.getText());
 		System.out.println(ctx.getPayload());
 		System.out.println(ctx.getRuleContext());
@@ -27,8 +27,13 @@ public class Annotation extends CommonType {
 		
 		int begin_offset = ctx.start.getStartIndex();
         int end_offset = ctx.stop.getStopIndex();
-        Interval interval = new Interval(begin_offset, end_offset);
-        String methodText = ctx.start.getInputStream().getText(interval);
+		System.out.println( begin_offset+"  "+end_offset );
+
+		Interval interval = new Interval(begin_offset, end_offset);
+		System.out.println( interval );
+
+//De tal intervalo extrae cierto texto
+		String methodText = ctx.start.getInputStream().getText(interval);
 		
         System.out.println( methodText );
 		System.out.println("FIN ANOTACIÓN");
