@@ -100,7 +100,7 @@ public class ClassDefinition extends CommonType {
 				}
 
 				implementationsList.add(implementation);
-				// System.out.println(implementation.toString());
+				System.out.println(implementation.toString());
 
 			}
 
@@ -110,6 +110,8 @@ public class ClassDefinition extends CommonType {
 			if (!name.equals("")) {
 				implementationsList.add(implementation); // añade una implementación no parametrizada, solo el nombre,
 															// es para cuando mas arriba salta el error
+				System.out.println(implementation.toString());
+
 			} else
 				System.out.println("no hay implementación");
 		}
@@ -165,8 +167,7 @@ public class ClassDefinition extends CommonType {
 		System.out.println(attributesList.size() + " atributos");
 		System.out.println(constructorsList.size() + " constructores");
 		System.out.println(methodsList.size() + " metodos");
-		System.out.println(annotationsList.size() + " anotaciones");
-
+		System.out.println(externalAnnotationsList.size() + " anotaciones externas");
 	}
 
 

@@ -28,17 +28,6 @@ public class InterfaceDefinition extends CommonType{
 
 
 
-    public void totalize() {
-
-        System.out.println("\n -------- TOTALIZACIÓN ----------");
-        System.out.println(importsList.size() + " importaciones");
-        System.out.println(typeParametersList.size() + " parametros de interface");
-      // System.out.println(implementationsList.size() + " implementaciones");
-        System.out.println(attributesList.size() + " atributos");
-        System.out.println(methodsList.size() + " metodos");
-        System.out.println(annotationsList.size() + " anotaciones");
-
-    }
 
     public void addExtend(JavaParser.InterfaceDeclarationContext ctx) {
         if(ctx.typeList().typeType().size()>=1){
@@ -48,6 +37,16 @@ public class InterfaceDefinition extends CommonType{
 
             }
         }
+    }
+    public void totalize() {
+
+        System.out.println("\n -------- TOTALIZACIÓN ----------");
+        System.out.println(importsList.size() + " importaciones");
+        System.out.println(typeParametersList.size() + " parametros de interface");
+        // System.out.println(implementationsList.size() + " implementaciones");
+        System.out.println(attributesList.size() + " atributos");
+        System.out.println(methodsList.size() + " metodos");
+        System.out.println(externalAnnotationsList.size() + " anotaciones externas");
     }
 
 }

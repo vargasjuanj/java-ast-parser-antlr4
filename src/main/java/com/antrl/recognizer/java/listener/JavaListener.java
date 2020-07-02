@@ -90,22 +90,27 @@ public class JavaListener extends JavaParserBaseListener {
 
 	}
 
-
+/* Se acomodo en base a los atributos
 	@Override
 	public void enterAnnotation(JavaParser.AnnotationContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterAnnotation(ctx);
-
-		Annotation anotation = new Annotation();
-		anotation.addData(ctx);
+		Annotation annotation = new Annotation();
+//if(ctx.getParent().getParent().getParent().getRuleIndex()==JavaParser.RULE_classBodyDeclaration){
+	if(ctx.depth()==8){
 		if(isClass){
-			_class.addAnnotation(anotation);
+		System.out.println("Anotación Interna1 ");
+		_class.addAnnotation(annotation.addData(ctx));
 
-		}else if(isInterface){
-			_interface.addAnnotation(anotation);
-		}
+	}else if(isInterface){
+		System.out.println("Anotación Interna2 ");
+		_interface.addAnnotation(annotation.addData(ctx));
 	}
 
+}
+
+	}
+*/
 	@Override
 	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
 		super.enterClassOrInterfaceModifier(ctx);
@@ -113,6 +118,7 @@ public class JavaListener extends JavaParserBaseListener {
 		if(ctx.annotation()!=null){ //Si existen anotaciones
 			//Solo para anotaciones externas
 			if(ctx.getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){
+				System.out.println("Anotación externa ");
 				externalAnnotationsList.add(CommonType.addAnnotation(ctx));
 			}
 		}

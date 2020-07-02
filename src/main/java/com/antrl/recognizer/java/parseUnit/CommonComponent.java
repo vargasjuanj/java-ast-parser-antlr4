@@ -28,7 +28,7 @@ public abstract class CommonComponent {
 		int tam = ctx.getParent().children.size();
 		// System.out.println("tam "+tam);
 		JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterfaceModifier= (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(0).getChild(0);
-		System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
+		//System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
 		if (tam == 1) { // Si es uno no tiene ningún modificador, sino otra información del nodo, otro
 						// hijo
 	commonComponent.setAccessModifier("");
