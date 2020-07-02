@@ -4,6 +4,7 @@ package com.antrl.recognizer.java.listener;
 import com.antrl.recognizer.java.JavaParser;
 import com.antrl.recognizer.java.JavaParserBaseListener;
 import com.antrl.recognizer.java.parseUnit.ClassDefinition;
+import com.antrl.recognizer.java.parseUnit.CommonType;
 import com.antrl.recognizer.java.parseUnit.InterfaceDefinition;
 import com.antrl.recognizer.java.parseUnit.member.*;
 import lombok.extern.java.Log;
@@ -21,21 +22,17 @@ public class JavaListener extends JavaParserBaseListener {
 	 * parametrizados de la clase, añadir un try catch en el metodo que lo analice,
 	 * ya que se crean solo si existen, sino salta el null pointer exception.
 	 *
-
+---ejemplo uso del numero de regla
 	 *     @Override
     public void exitLinea(GestrategiacsvParser.LineaContext ctx) { //linea cargada
         if(ctx.getParent().getRuleIndex()==GestrategiacsvParser.RULE_cabecera){
             return;
         }
         }
-        *
-        *
-        *
-        *
-        * otro tipo de anotacion
-        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-String juan;
-	 /
+
+---ejemplo casteo a cierto contexto a traves de la navegación. De MemberDeclarationContext a su anotacion modifier
+		JavaParser.AnnotationContext annota= (JavaParser.AnnotationContext) ctx.getParent().getChild(0).getChild(0).getChild(0);
+
 	 */
 	private boolean isClass;
 	private boolean isInterface;
@@ -112,29 +109,12 @@ String juan;
 	@Override
 	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
 		super.enterClassOrInterfaceModifier(ctx);
-		if(ctx.annotation()!=null){
-			Annotation annotation= new Annotation();
-			annotation.setName(ctx.annotation().qualifiedName().getText());
 
-			if(ctx.annotation().elementValuePairs()!=null){
-				System.out.println("ANOTACION ELEMENTVALUEPAIR");
-				for (int i=0; i<ctx.annotation().elementValuePairs().elementValuePair().size(); i++){
-					ElementValuePair elementValuePair= new ElementValuePair();
-					elementValuePair.setName(ctx.annotation().elementValuePairs().elementValuePair(i).IDENTIFIER().getText());
-					elementValuePair.setValue(ctx.annotation().elementValuePairs().elementValuePair(i).elementValue().getText());
-					annotation.getElementValuePairs().add(elementValuePair);
-					externalAnnotationsList.add(annotation);
-				}
-
-			}else if(ctx.annotation().elementValue()!=null){
-				System.out.println("ANOTACION ARRAYiNITIALIZER");
-				for (int i=0; i<ctx.annotation().elementValue().elementValueArrayInitializer().elementValue().size(); i++){
-					annotation.getElementValueArrayInitializer().add(ctx.annotation().elementValue().elementValueArrayInitializer().elementValue(i).getText());
-
-				}
-
+		if(ctx.annotation()!=null){ //Si existen anotaciones
+			//Solo para anotaciones externas
+			if(ctx.getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){
+				externalAnnotationsList.add(CommonType.addAnnotation(ctx));
 			}
-			System.out.println(annotation.toString());
 		}
 	}
 

@@ -6,10 +6,16 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
 
+	@Column(name="id")
+	int id;
+	/*
 	List<String> lista = new ArrayList();
 	private String nombre;
 	public static final int numero = 2;
@@ -37,4 +43,6 @@ abstract  void prueba();
 	protected Object escuchar(String mensaje) {
 		return new Object();
 	}
+
+ */
 }

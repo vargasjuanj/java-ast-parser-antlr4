@@ -3,6 +3,7 @@ package com.antrl.recognizer.java.parseUnit;
 import com.antrl.recognizer.java.JavaParser;
 import com.antrl.recognizer.java.parseUnit.member.Annotation;
 import com.antrl.recognizer.java.parseUnit.member.Attribute;
+import com.antrl.recognizer.java.parseUnit.member.ElementValuePair;
 import com.antrl.recognizer.java.parseUnit.member.Method;
 import lombok.Data;
 
@@ -19,6 +20,39 @@ protected String _package;
 protected List<Annotation> externalAnnotationsList= new ArrayList();
 
    protected List<String> typeParametersList = new ArrayList<>(); // Parametrización de la clase, si es q lo es.
+
+    public static Annotation addAnnotation(JavaParser.ClassOrInterfaceModifierContext ctx) {
+            System.out.println("ANOTACION EXTERNA");
+            Annotation annotation= new Annotation();
+            annotation.setName(ctx.annotation().qualifiedName().getText()); // @FunctionalInterface
+
+            if(ctx.annotation().elementValuePairs()!=null){
+                //System.out.println("ANOTACION ELEMENTVALUEPAIR");
+                // Para                // @Column(name="pablo",apellido="picapiedra")
+                for (int i=0; i<ctx.annotation().elementValuePairs().elementValuePair().size(); i++){
+                    ElementValuePair elementValuePair= new ElementValuePair();
+                    elementValuePair.setName(ctx.annotation().elementValuePairs().elementValuePair(i).IDENTIFIER().getText());
+                    elementValuePair.setValue(ctx.annotation().elementValuePairs().elementValuePair(i).elementValue().getText());
+                    annotation.getElementValuePairs().add(elementValuePair);
+
+                }
+                return annotation;
+            }else if(ctx.annotation().elementValue()!=null){
+                //Para                // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+                //System.out.println("ANOTACION ARRAYiNITIALIZER");
+                for (int i=0; i<ctx.annotation().elementValue().elementValueArrayInitializer().elementValue().size(); i++){
+                    annotation.getElementValueArrayInitializer().add(ctx.annotation().elementValue().elementValueArrayInitializer().elementValue(i).getText());
+
+                }
+
+
+return annotation;
+            }
+            System.out.println(annotation.toString());
+
+return null;
+
+    }
 
     public void addAttribute(Attribute attribute) {
         System.out.println(attribute.toString());

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.antrl.recognizer.java.JavaParser;
 
+import com.antrl.recognizer.java.parseUnit.member.Annotation;
 import lombok.Data;
 import lombok.ToString;
 
@@ -13,6 +14,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public abstract class CommonComponent {
+	protected Annotation annotation;
 	protected String accessModifier;
 	protected List<String> modifiersList = new ArrayList();  //para atributos
 	protected String type;
@@ -25,10 +27,12 @@ public abstract class CommonComponent {
 														// y metodos
 		int tam = ctx.getParent().children.size();
 		// System.out.println("tam "+tam);
+		JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterfaceModifier= (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(0).getChild(0);
+		System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
 		if (tam == 1) { // Si es uno no tiene ningún modificador, sino otra información del nodo, otro
 						// hijo
-	//setAccessModifier("");
-		//this.accessModifier="";
+	commonComponent.setAccessModifier("");
+
 
 		} else if (tam > 1) {// si es mayor a uno significa que tiene uno o mas modificadores
 			for (int i = 0; i < tam - 1; i++) { // Es tam-1 para que no agarre el ultimo hijo que es el propio
@@ -37,19 +41,17 @@ public abstract class CommonComponent {
 
 				if (i == 0) {
 					commonComponent.setAccessModifier(verifyAccess(modifier));
-					// System.out.println("Modificador de acceso componente: "+
-					// commonComponent.getAccesModifier());
-					if (!commonComponent.getAccessModifier().equals("")) { // Si no tuviera ningun modificador de
-																			// acceso, pero si tiene otro como final o
-																			// static, lo saltaria, por eso solo salta
-																			// una iteración si ha ocupado un espacio en
-																			// el array.
+					if (!commonComponent.getAccessModifier().equals("")) {
 						continue;
 					}
 
 				}
+if(!modifier.startsWith("@")){
+	commonComponent.getModifiersList().add(modifier);
 
-			commonComponent.getModifiersList().add(modifier);
+}else{
+	commonComponent.setAnnotation(CommonType.addAnnotation(ctxClassOrInterfaceModifier));
+}
 				// System.out.println("Otro modificador componente: : "+modifier);
 			}
 
@@ -59,29 +61,27 @@ public abstract class CommonComponent {
 	// Es el mismo método que el de arriba, el problema es el contexto, la
 	// navegación cambia, se complica. Por eso meti este sobrecargado. Por más que
 	// use un contexto general cambiaria la navegación, si usara un solo metodo.
-	public static void addModifiersClassDeclaration(ClassDefinition classDefinition,
+	public static void addModifiersClassDeclaration(CommonComponent commonComponent,
 											JavaParser.ClassDeclarationContext ctx) {
 
-
 				int tam = ctx.getParent().children.size();
-
 		if (tam == 1) {
-		classDefinition.setAccessModifier("");
+		commonComponent.setAccessModifier("");
 		} else if (tam > 1) {
 			for (int i = 0; i < tam - 1; i++) {
 				String modifier = ctx.getParent().getChild(i).getText();
 
 				if (!modifier.contains("@") && !modifier.contains("final") && !modifier.contains("static") && !modifier.contains("abstract")) {
-				classDefinition.setAccessModifier(verifyAccess(modifier));
+				commonComponent.setAccessModifier(verifyAccess(modifier));
 					// System.out.println("Modificador de acceso componente: "+
 					// commonComponent.getAccesModifier());
-					if (!classDefinition.getAccessModifier().equals("")) {
+					if (!commonComponent.getAccessModifier().equals("")) {
 						continue;
 					}
 
 				}
 				if(!modifier.contains("@")){
-					classDefinition.getModifiersList().add(modifier);
+					commonComponent.getModifiersList().add(modifier);
 
 				}
 			}
@@ -89,13 +89,14 @@ public abstract class CommonComponent {
 		}
 	}
 
-	public static void addModifierInterfaceDeclaration(InterfaceDefinition interfaceDefinition,
+	public static void addModifierInterfaceDeclaration(CommonComponent commonComponent,
 											 JavaParser.InterfaceDeclarationContext ctx) {
 		int tam = ctx.getParent().children.size();
 		if (tam ==2) {
-			interfaceDefinition.setAccessModifier("public");
+			commonComponent.setAccessModifier("public");
 		}
 	}
+
 
 	public static String verifyAccess(String modifier) {
 		if (modifier.contains("private")) {
