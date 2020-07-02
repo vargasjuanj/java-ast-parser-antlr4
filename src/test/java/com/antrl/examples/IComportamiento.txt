@@ -1,0 +1,19 @@
+package com.antrl.examples;
+
+import lombok.Setter;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.Id;
+
+@Repository(name="pablo",apellido="picapiedra")
+@FunctionalInterface
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public interface IComportamiento  {
+    //Por defecto las variables de una interfaz son estaticas , publicas y finales
+    //Formalmente una interfaz funcional se identifica con la anotacion @FunctionalInterface, y debe contener un unico metodo abstracto y todos los defaults que se quiera  y variables
+    //Los métodos default se pueden sobreescribir si se quisieran en las clases que implementen la interfaz
+    //El Método abstracto unico en una interfaz funcional sirve para que a una firma de una función se le pueda rellenar el cuerpo en una clase que la implemente de la forma que se quiera, pero utilizando expresiones lambda ..
+    //.. en distintas lineas se puede almacenar en una variable del tipo de la interfaz un cuerpo distinto para una misma firma de función
+
+public void algo();
+}

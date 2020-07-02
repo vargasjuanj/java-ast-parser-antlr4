@@ -6,6 +6,7 @@ import com.antrl.recognizer.java.parseUnit.CommonComponent;
 import lombok.Data;
 import lombok.ToString;
 
+
 @Data
 @ToString(callSuper = true)
 public class Attribute extends CommonComponent {

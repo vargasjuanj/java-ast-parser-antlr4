@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString(callSuper = true)
+@ToString()
 public class FormalParameter {
 	private String type;
 	private String name;

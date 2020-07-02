@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString(callSuper = true)
+
 public class Method extends CommonConstructorMethod {
 
 	@Override
@@ -17,4 +17,14 @@ public class Method extends CommonConstructorMethod {
 		addFormalParameters(ctx.methodDeclaration().formalParameters());
 	}
 
+	@Override
+	public String toString() {
+		return "Method{" +
+				"formalParametersList=" + formalParametersList +
+				", accessModifier='" + accessModifier + '\'' +
+				", modifiersList=" + modifiersList +
+				", type='" + type + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

@@ -8,7 +8,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+
 	List<String> lista = new ArrayList();
 	private String nombre;
 	public static final int numero = 2;
@@ -21,7 +22,7 @@ public final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, Jp
 	protected Persona(int one, Double two) {
 
 	}
-
+abstract  void prueba();
 	public static final void mostrarNombre(String elNombre, int edad) {
 	}
 
