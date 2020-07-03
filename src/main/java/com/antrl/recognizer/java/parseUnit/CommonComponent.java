@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.antrl.recognizer.java.JavaParser;
 
 import com.antrl.recognizer.java.parseUnit.member.Annotation;
+import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import lombok.Data;
 import lombok.ToString;
 
@@ -14,6 +15,12 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public abstract class CommonComponent {
+	protected boolean oneToOne;
+	protected boolean oneToMany;
+	private boolean manyToMany;
+
+	protected  String relationWithType;
+
 	protected Annotation annotation;
 	protected Annotation annotationAux;
 	protected String accessModifier;
@@ -40,8 +47,11 @@ public abstract class CommonComponent {
 												// fielDeclaración, el contexto actual
 				String modifier = ctx.getParent().getChild(i).getText();
 
-				if (i == 0) {
+
+				if (!modifier.contains("@") && !modifier.contains("final") && !modifier.contains("static") && !modifier.contains("abstract")) {
 					commonComponent.setAccessModifier(verifyAccess(modifier));
+					// System.out.println("Modificador de acceso componente: "+
+					// commonComponent.getAccesModifier());
 					if (!commonComponent.getAccessModifier().equals("")) {
 						continue;
 					}
@@ -50,16 +60,34 @@ public abstract class CommonComponent {
 if(!modifier.startsWith("@")){
 	commonComponent.getModifiersList().add(modifier);
 
-}else{
+}else {
 	commonComponent.setAnnotation(CommonType.addAnnotation(ctxClassOrInterfaceModifier));
-	try{
-		JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterFaceModifierAux = (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(1).getChild(0);
-		if(ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinColumn") || ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinTable")){
-			commonComponent.setAnnotationAux(CommonType.addAnnotation(ctxClassOrInterFaceModifierAux));
-		}
-	}catch(Exception e){
 
-	}
+	if(ctxClassOrInterfaceModifier.annotation().qualifiedName().getText().startsWith("OneToOne")){
+  	commonComponent.setOneToOne(true);
+		commonComponent.relationWithType=commonComponent.type;
+  }else if(ctxClassOrInterfaceModifier.annotation().qualifiedName().getText().startsWith("OneToMany")) {
+	  commonComponent.setOneToMany(true);
+		commonComponent.relationWithType=commonComponent.type.replaceFirst("List<", "");
+		commonComponent.relationWithType=commonComponent.relationWithType.replaceFirst(">","");
+  }else if (ctxClassOrInterfaceModifier.annotation().qualifiedName().getText().startsWith("ManyToMany")) {
+	  commonComponent.setManyToMany(true);
+		commonComponent.relationWithType=commonComponent.type.replaceFirst("List<", "");
+		commonComponent.relationWithType=commonComponent.relationWithType.replaceFirst(">","");
+  }
+
+
+	  try {
+			JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterFaceModifierAux = (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(1).getChild(0);
+			if (ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinColumn") || ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinTable")) {
+				commonComponent.setAnnotationAux(CommonType.addAnnotation(ctxClassOrInterFaceModifierAux));
+			}
+		} catch (Exception e) {
+
+		}
+
+
+
 }
 				// System.out.println("Otro modificador componente: : "+modifier);
 			}

@@ -10,10 +10,9 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public class Attribute extends CommonComponent {
-
 	public void addData(JavaParser.MemberDeclarationContext ctx) {
 
-		addModifiersMemberDeclaration(this, ctx);
+
 		name = ctx.fieldDeclaration().variableDeclarators().variableDeclarator(0).variableDeclaratorId().getText();
 		// System.out.println("nombre "+name);
 		if (name.contains("[]")) { // La gramatica tiene una pequeña deficiencia, si los corchetes estan a la
@@ -29,7 +28,7 @@ public class Attribute extends CommonComponent {
 		}
 		// System.out.println(name);
 		// System.out.println(type);
-
+		addModifiersMemberDeclaration(this, ctx);
 	}
 
 }

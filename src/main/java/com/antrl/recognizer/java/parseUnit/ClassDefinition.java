@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.antrl.recognizer.java.JavaParser;
 
+import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import com.antrl.recognizer.java.parseUnit.member.Constructor;
 import com.antrl.recognizer.java.parseUnit.member.Implementation;
 
@@ -23,7 +24,6 @@ public class ClassDefinition extends CommonType {
 	private String _extends;
 
 	private List<Implementation> implementationsList = new ArrayList<>();
-
 
 
 	private List<Constructor> constructorsList = new ArrayList<>();
@@ -164,7 +164,10 @@ public class ClassDefinition extends CommonType {
 		System.out.println(importsList.size() + " importaciones");
 		System.out.println(typeParametersList.size() + " parametros de clase");
 		System.out.println(implementationsList.size() + " implementaciones");
-		System.out.println(attributesList.size() + " atributos");
+		System.out.println(attributesList.size() + " atributos de tipo comun");
+		System.out.println(getOneToOneList().size() + " atributos de relación OneToOne");
+		System.out.println(getOneToManyList().size()+ " atributos de relacion OneToMany");
+		System.out.println(getManyToManyList().size()+ " atributos de relacion ManyToMany");
 		System.out.println(constructorsList.size() + " constructores");
 		System.out.println(methodsList.size() + " metodos");
 		System.out.println(externalAnnotationsList.size() + " anotaciones externas");

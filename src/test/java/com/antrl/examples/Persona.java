@@ -11,6 +11,17 @@ import javax.persistence.*;
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+
+	public String algo;
+	@Column(name="cam")
+private String campo;
+	@OneToOne
+	@JoinColumn(name="one")
+Uno uno;
+
+@OneToMany
+public List<Dos> dos;
+
 	@ManyToMany(cascade = {
 			CascadeType.PERSIST,
 			CascadeType.MERGE

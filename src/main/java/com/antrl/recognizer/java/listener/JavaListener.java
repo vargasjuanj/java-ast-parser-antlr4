@@ -16,7 +16,8 @@ import java.util.List;
 public class JavaListener extends JavaParserBaseListener {
 	// Usar logs
 
-	//Ver lo de atributos en null y fijarse que lo demas funcione bien
+	// null en atributos,etc
+
 	/*
 	 * Nota: Para los nodos que son opcionales como las implementaciones y tipos
 	 * parametrizados de la clase, añadir un try catch en el metodo que lo analice,
