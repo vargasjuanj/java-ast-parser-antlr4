@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public abstract class CommonComponent {
 	protected Annotation annotation;
+	protected Annotation annotationAux;
 	protected String accessModifier;
 	protected List<String> modifiersList = new ArrayList();  //para atributos
 	protected String type;
@@ -51,6 +52,14 @@ if(!modifier.startsWith("@")){
 
 }else{
 	commonComponent.setAnnotation(CommonType.addAnnotation(ctxClassOrInterfaceModifier));
+	try{
+		JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterFaceModifierAux = (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(1).getChild(0);
+		if(ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinColumn") || ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinTable")){
+			commonComponent.setAnnotationAux(CommonType.addAnnotation(ctxClassOrInterFaceModifierAux));
+		}
+	}catch(Exception e){
+
+	}
 }
 				// System.out.println("Otro modificador componente: : "+modifier);
 			}

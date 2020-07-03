@@ -34,6 +34,7 @@ protected List<Annotation> externalAnnotationsList= new ArrayList();
                     elementValuePair.setValue(ctx.annotation().elementValuePairs().elementValuePair(i).elementValue().getText());
                     annotation.getElementValuePairs().add(elementValuePair);
 
+
                 }
                 System.out.println(annotation.toString());
                 return annotation;
@@ -51,7 +52,7 @@ return annotation;
             }
 
         System.out.println(annotation.toString());
-return null;
+return annotation;
 
     }
 

@@ -60,7 +60,7 @@ public class JavaListener extends JavaParserBaseListener {
 		if(isClass){
 			_class.addAttribute(attribute);
 		}else if(isInterface){
-			_class.addAttribute(attribute);
+			_interface.addAttribute(attribute);
 		}
 
 	}

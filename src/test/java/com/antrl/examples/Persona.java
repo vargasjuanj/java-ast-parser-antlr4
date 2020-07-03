@@ -6,15 +6,20 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
-
-	@Column(name="id")
-	int id;
+	@ManyToMany(cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE
+	})
+	@JoinTable(name = "post_tag",
+			joinColumns = @JoinColumn(name = "post_id"),
+			inverseJoinColumns = @JoinColumn(name = "tag_id")
+	)
+	private List<Domicilio> domicilios = new ArrayList<>();
 	/*
 	List<String> lista = new ArrayList();
 	private String nombre;
