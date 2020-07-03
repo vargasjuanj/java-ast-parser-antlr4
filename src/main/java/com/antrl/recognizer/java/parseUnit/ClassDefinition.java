@@ -168,9 +168,12 @@ public class ClassDefinition extends CommonType {
 		System.out.println(getOneToOneList().size() + " atributos de relación OneToOne");
 		System.out.println(getOneToManyList().size()+ " atributos de relacion OneToMany");
 		System.out.println(getManyToManyList().size()+ " atributos de relacion ManyToMany");
+		System.out.println(getManyToOneList().size()+ " atributos de relacion ManyToOne");
 		System.out.println(constructorsList.size() + " constructores");
+
 		System.out.println(methodsList.size() + " metodos");
 		System.out.println(externalAnnotationsList.size() + " anotaciones externas");
+
 	}
 
 

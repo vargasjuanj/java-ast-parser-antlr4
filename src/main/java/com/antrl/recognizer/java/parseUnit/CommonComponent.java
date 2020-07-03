@@ -18,11 +18,13 @@ public abstract class CommonComponent {
 	protected boolean oneToOne;
 	protected boolean oneToMany;
 	private boolean manyToMany;
+	private boolean manyToOne;
 
 	protected  String relationWithType;
+	protected List<Annotation> annotationsList = new ArrayList<>();
 
-	protected Annotation annotation;
-	protected Annotation annotationAux;
+	//protected Annotation annotation;
+	//protected Annotation annotationAux;
 	protected String accessModifier;
 	protected List<String> modifiersList = new ArrayList();  //para atributos
 	protected String type;
@@ -35,7 +37,7 @@ public abstract class CommonComponent {
 														// y metodos
 		int tam = ctx.getParent().children.size();
 		// System.out.println("tam "+tam);
-		JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterfaceModifier= (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(0).getChild(0);
+
 		//System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
 		if (tam == 1) { // Si es uno no tiene ningún modificador, sino otra información del nodo, otro
 						// hijo
@@ -45,6 +47,7 @@ public abstract class CommonComponent {
 		} else if (tam > 1) {// si es mayor a uno significa que tiene uno o mas modificadores
 			for (int i = 0; i < tam - 1; i++) { // Es tam-1 para que no agarre el ultimo hijo que es el propio
 												// fielDeclaración, el contexto actual
+				JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterfaceModifier= (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(i).getChild(0);
 				String modifier = ctx.getParent().getChild(i).getText();
 
 
@@ -58,10 +61,12 @@ public abstract class CommonComponent {
 
 				}
 if(!modifier.startsWith("@")){
+
 	commonComponent.getModifiersList().add(modifier);
 
 }else {
-	commonComponent.setAnnotation(CommonType.addAnnotation(ctxClassOrInterfaceModifier));
+	System.out.println("entre");
+	commonComponent.getAnnotationsList().add((CommonType.addAnnotation(ctxClassOrInterfaceModifier)));
 
 	if(ctxClassOrInterfaceModifier.annotation().qualifiedName().getText().startsWith("OneToOne")){
   	commonComponent.setOneToOne(true);
@@ -74,18 +79,22 @@ if(!modifier.startsWith("@")){
 	  commonComponent.setManyToMany(true);
 		commonComponent.relationWithType=commonComponent.type.replaceFirst("List<", "");
 		commonComponent.relationWithType=commonComponent.relationWithType.replaceFirst(">","");
-  }
+  }else if (ctxClassOrInterfaceModifier.annotation().qualifiedName().getText().startsWith("ManyToOne")) {
+		commonComponent.setManyToOne(true);
+		commonComponent.relationWithType=commonComponent.type.replaceFirst("List<", "");
+		commonComponent.relationWithType=commonComponent.relationWithType.replaceFirst(">","");
+	}
 
-
+/*
 	  try {
-			JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterFaceModifierAux = (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(1).getChild(0);
+			JavaParser.ClassOrInterfaceModifierContext ctxClassOrInterFaceModifierAux = (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(i+1).getChild(0);
 			if (ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinColumn") || ctxClassOrInterFaceModifierAux.annotation().qualifiedName().getText().startsWith("JoinTable")) {
 				commonComponent.setAnnotationAux(CommonType.addAnnotation(ctxClassOrInterFaceModifierAux));
 			}
 		} catch (Exception e) {
 
 		}
-
+*/
 
 
 }

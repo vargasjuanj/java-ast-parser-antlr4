@@ -15,7 +15,6 @@ public abstract class CommonType extends CommonComponent {
 protected String _package;
 
   protected List<String> importsList = new ArrayList<>();
- //  protected List<Annotation> annotationsList = new ArrayList<>();
     protected List<Attribute> attributesList = new ArrayList<>();
   protected List<Method> methodsList = new ArrayList<>();
 protected List<Annotation> externalAnnotationsList= new ArrayList();
@@ -24,6 +23,7 @@ protected List<Annotation> externalAnnotationsList= new ArrayList();
     protected List<Attribute> oneToOneList= new ArrayList();
     protected List<Attribute> oneToManyList= new ArrayList();
     protected List<Attribute> manyToManyList= new ArrayList();
+    protected List<Attribute> manyToOneList= new ArrayList();
     public static Annotation addAnnotation(JavaParser.ClassOrInterfaceModifierContext ctx) {
             Annotation annotation= new Annotation();
             annotation.setName(ctx.annotation().qualifiedName().getText()); // @FunctionalInterface
@@ -45,6 +45,7 @@ protected List<Annotation> externalAnnotationsList= new ArrayList();
     }
 */
                 }
+
                 System.out.println(annotation.toString());
                 return annotation;
             }else if(ctx.annotation().elementValue()!=null){
@@ -71,9 +72,12 @@ return annotation;
            getOneToOneList().add(attribute);
         }else if(attribute.isOneToMany()){
             getOneToManyList().add(attribute);
-        }else if(attribute.isManyToMany()){
+        }else if(attribute.isManyToMany()) {
             getManyToManyList().add(attribute);
-        }else{
+        }else if(attribute.isManyToOne()){
+                getManyToOneList().add(attribute);
+            }
+        else{
             attributesList.add(attribute);
         }
 
@@ -85,13 +89,9 @@ return annotation;
     public void addImport(String _import) {
         importsList.add(_import);
     }
-    /*
-    public void addAnnotation(Annotation annotation) {
-        //System.out.println(annotation);
-        annotationsList.add(annotation);
-    }
 
-     */
+
+
     public void addTypeParametersClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
        try{
            addTypeParameters(ctx.typeParameters().typeParameter());

@@ -11,7 +11,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabla_numeros")
+	@TableGenerator(name = "tabla_numeros", table = "NUMEROS", pkColumnName = "tabla", valueColumnName = "numero", pkColumnValue = "r33", allocationSize = 10)
+	@Column(name = "ID_FORMULARIO", length = 10, insertable = true, nullable = false, unique = true, updatable = false)
+	private Long id;
+	/*
 	public String algo;
 	@Column(name="cam")
 private String campo;
@@ -31,7 +36,7 @@ public List<Dos> dos;
 			inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
 	private List<Domicilio> domicilios = new ArrayList<>();
-	/*
+
 	List<String> lista = new ArrayList();
 	private String nombre;
 	public static final int numero = 2;
