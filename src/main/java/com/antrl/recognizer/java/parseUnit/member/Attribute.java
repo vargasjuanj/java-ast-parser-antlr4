@@ -10,12 +10,12 @@ import lombok.ToString;
 @Data
 //@ToString(callSuper = true)
 public class Attribute extends CommonComponent {
-	private String structure;
+	private String structure="";
+	private String typeRelation="";
+
 	public void addData(JavaParser.MemberDeclarationContext ctx) {
 
-
 		name = ctx.fieldDeclaration().variableDeclarators().variableDeclarator(0).variableDeclaratorId().getText();
-		// System.out.println("nombre "+name);
 
 		if (name.contains("[]")) { // La gramatica tiene una pequeña deficiencia, si los corchetes estan a la
 									// derecha del nombre, los toma como parte del nombre del atributo.
@@ -23,8 +23,7 @@ public class Attribute extends CommonComponent {
 			name = name.replace("[]", "");
 			type = ctx.fieldDeclaration().typeType().getText(); // Extraigo toda la data del nodo typeType, puede
 
-																// generico o clases parametrizadas dentro de una lista,
-																// ej. List<Algo<String,Object>>;
+																// generico o clases parametrizadas dentro de una lista// ej. List<Algo<String,Object>>;
 			//type += "[]"; // formo el tipo completo
 
 		} else {
@@ -38,23 +37,27 @@ public class Attribute extends CommonComponent {
 			else if(type.startsWith("List<")){
 				type=type.replaceFirst("List<","").replaceFirst(">","");
 				structure="List";
-			}else{
-				structure="";
 			}
 
 		}
-		// System.out.println(name);
-		// System.out.println(type);
+
 		addModifiersMemberDeclaration(this, ctx);
 	}
-
+	public void selectTypeRelation(String nameAnnotation) {
+		if(nameAnnotation.startsWith("OneToOne")){
+			typeRelation="11";
+		}else if(nameAnnotation.startsWith("OneToMany")){
+			typeRelation="1N";
+		}else if(nameAnnotation.startsWith("ManyToOne")){
+			typeRelation="N1";
+		}else if(nameAnnotation.startsWith("ManyToMany")){
+			typeRelation="NN";
+		}
+	}
 	@Override
 	public String toString() {
 		return "Attribute{" +
-				"oneToOne=" + oneToOne +
-				", oneToMany=" + oneToMany +
-				", structure='" + structure + '\'' +
-				", relationWithType='" + relationWithType + '\'' +
+				"typeRelation='" + typeRelation + '\'' +
 				", annotationsList=" + annotationsList +
 				", accessModifier='" + accessModifier + '\'' +
 				", modifiersList=" + modifiersList +

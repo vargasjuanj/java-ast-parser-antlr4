@@ -31,7 +31,7 @@ public class ClassDefinition extends CommonType {
 
 
 	public void addConstructor(Constructor constructor) {
-		System.out.println(constructor);
+		System.out.println(constructor.toString());
 		constructorsList.add(constructor);
 	}
 
@@ -164,11 +164,7 @@ public class ClassDefinition extends CommonType {
 		System.out.println(importsList.size() + " importaciones");
 		System.out.println(typeParametersList.size() + " parametros de clase");
 		System.out.println(implementationsList.size() + " implementaciones");
-		System.out.println(attributesList.size() + " atributos de tipo comun");
-		System.out.println(getOneToOneList().size() + " atributos de relación OneToOne");
-		System.out.println(getOneToManyList().size()+ " atributos de relacion OneToMany");
-		System.out.println(getManyToManyList().size()+ " atributos de relacion ManyToMany");
-		System.out.println(getManyToOneList().size()+ " atributos de relacion ManyToOne");
+		System.out.println(attributesList.size() + " atributos");
 		System.out.println(constructorsList.size() + " constructores");
 
 		System.out.println(methodsList.size() + " metodos");

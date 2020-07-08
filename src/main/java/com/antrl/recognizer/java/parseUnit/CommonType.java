@@ -24,10 +24,6 @@ protected String _package;
 protected List<Annotation> externalAnnotationsList= new ArrayList();
 
    protected List<String> typeParametersList = new ArrayList<>(); // Parametrización de la clase, si es q lo es.
-    protected List<Attribute> oneToOneList= new ArrayList();
-    protected List<Attribute> oneToManyList= new ArrayList();
-    protected List<Attribute> manyToManyList= new ArrayList();
-    protected List<Attribute> manyToOneList= new ArrayList();
     public static Annotation addAnnotation(JavaParser.ClassOrInterfaceModifierContext ctx) {
             Annotation annotation= new Annotation();
             annotation.setName(ctx.annotation().qualifiedName().getText()); // @FunctionalInterface
@@ -50,7 +46,6 @@ protected List<Annotation> externalAnnotationsList= new ArrayList();
 */
                 }
 
-                System.out.println(annotation.toString());
                 return annotation;
             }else if(ctx.annotation().elementValue()!=null){
                 //Para                // @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -61,29 +56,17 @@ protected List<Annotation> externalAnnotationsList= new ArrayList();
                 }
 
 
-                System.out.println(annotation.toString());
 return annotation;
             }
 
-        System.out.println(annotation.toString());
 return annotation;
 
     }
 
     public void addAttribute(Attribute attribute) {
-        System.out.println(attribute.toString());
-        if(attribute.isOneToOne()){
-           getOneToOneList().add(attribute);
-        }else if(attribute.isOneToMany()){
-            getOneToManyList().add(attribute);
-        }else if(attribute.isManyToMany()) {
-            getManyToManyList().add(attribute);
-        }else if(attribute.isManyToOne()){
-                getManyToOneList().add(attribute);
-            }
-        else{
             attributesList.add(attribute);
-        }
+        System.out.println(attribute.toString());
+
 
     }
     public void addMethod(Method method) {

@@ -22,9 +22,6 @@ public class Method extends CommonConstructorMethod {
 	public String toString() {
 		return "Method{" +
 				"formalParametersList=" + formalParametersList +
-				", oneToOne=" + oneToOne +
-				", oneToMany=" + oneToMany +
-				", relationWithType='" + relationWithType + '\'' +
 				", annotationsList=" + annotationsList +
 				", accessModifier='" + accessModifier + '\'' +
 				", modifiersList=" + modifiersList +

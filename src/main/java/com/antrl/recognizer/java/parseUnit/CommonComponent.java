@@ -15,12 +15,6 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 public abstract class CommonComponent {
-	protected boolean oneToOne;
-	protected boolean oneToMany;
-	private boolean manyToMany;
-	private boolean manyToOne;
-
-	protected  String relationWithType;
 	protected List<Annotation> annotationsList = new ArrayList<>();
 	protected String accessModifier;
 	protected List<String> modifiersList = new ArrayList();  //para atributos
@@ -33,6 +27,7 @@ public abstract class CommonComponent {
 											  JavaParser.MemberDeclarationContext ctx) { // Use un contexto padre tanto de atributos (fiel) constructores
 														// y metodos
 		int tam = ctx.getParent().children.size();
+		// System.out.println("tam "+tam);
 
 		//System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
 		if (tam == 1) { // Si es uno no tiene ningún modificador, sino otra información del nodo, otro
@@ -57,6 +52,7 @@ public abstract class CommonComponent {
 
 				}
 if(!modifier.startsWith("@")){
+
 	commonComponent.getModifiersList().add(modifier);
 
 }

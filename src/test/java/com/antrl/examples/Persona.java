@@ -3,8 +3,11 @@ package com.antrl.examples;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.antrl.examples.entity.parameter.Profesion;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
@@ -22,30 +25,24 @@ public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>,
 protected Persona persona;
 */
 
-
-
-
-
-	@Bean
-	public void metodoAnotacion(){
-
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabla_numeros")
 	@TableGenerator(name = "tabla_numeros", table = "NUMEROS", pkColumnName = "tabla", valueColumnName = "numero", pkColumnValue = "r33", allocationSize = 10)
 	@Column(name = "ID_FORMULARIO", length = 10, insertable = true, nullable = false, unique = true, updatable = false)
 	private Long id;
 
-	public String algo;
-	@Column(name="cam")
-private String campo;
 	@OneToOne
 	@JoinColumn(name="one")
 Uno uno;
 
 @OneToMany
 public List<Dos> dos;
+
+
+	@NotFound(action = NotFoundAction.IGNORE)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "DS_TITULO")
+	private Profesion profesion;
 
 	@ManyToMany(cascade = {
 			CascadeType.PERSIST,
@@ -56,6 +53,13 @@ public List<Dos> dos;
 			inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
 	private List<Domicilio> domicilios = new ArrayList<>();
+
+public Persona(){
+
+}
+	@Bean
+	public void metodoAnotacion(){}
+
 /*
 	List<String> lista = new ArrayList();
 
@@ -88,6 +92,6 @@ abstract  void prueba();
 	protected Object escuchar(String mensaje) {
 		return new Object();
 	}
-
 */
+
 }

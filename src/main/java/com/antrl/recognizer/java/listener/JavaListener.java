@@ -8,6 +8,7 @@ import com.antrl.recognizer.java.parseUnit.CommonType;
 import com.antrl.recognizer.java.parseUnit.InterfaceDefinition;
 import com.antrl.recognizer.java.parseUnit.member.*;
 import lombok.extern.java.Log;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +42,11 @@ public class JavaListener extends JavaParserBaseListener {
 	private InterfaceDefinition _interface= new InterfaceDefinition();
 	private List<Annotation> externalAnnotationsList= new ArrayList<>();
 	private List<Annotation> annotationsMemberList= new ArrayList<>();
+	private String typeRelationAux="";
 
 
 	@Override
 	public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-		System.out.println("Importación: " + ctx.qualifiedName().getText());
 		_class.addImport(ctx.qualifiedName().getText());
 		_interface.addImport(ctx.qualifiedName().getText());
 	}
@@ -57,13 +58,19 @@ public class JavaListener extends JavaParserBaseListener {
 		//anotaciones internas para un metodo o atributo
 		if (ctx.getParent().getParent().getParent().getRuleIndex() == JavaParser.RULE_classBodyDeclaration) {
 			annotationsMemberList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
+			String nameAnnotation=ctx.qualifiedName().getText();
+			if(nameAnnotation.startsWith("OneTo") || nameAnnotation.startsWith("ManyTo")){
+				typeRelationAux=nameAnnotation;
+			}
+
+
 		}else if(ctx.getParent().getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){  //Anotaciones externas al tipo clase o interface
-			System.out.println("Anotacion externa");
 			externalAnnotationsList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
 		}else{
 			//para anotación dentro de otra, dentro de un value de un elementValuePair. Queda como value asi como esta
 		}
 	}
+
 
 	@Override
 	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
@@ -90,6 +97,9 @@ public class JavaListener extends JavaParserBaseListener {
 		attribute.addData(ctxMemberDeclaration);
 		attribute.setAnnotationsList(annotationsMemberList);
 		annotationsMemberList= new ArrayList<>();// Se vuelve a inicializar para otro miembro
+			attribute.selectTypeRelation(typeRelationAux);
+ 			typeRelationAux="";
+
 		if(isClass){
 			_class.addAttribute(attribute);
 		}else if(isInterface){

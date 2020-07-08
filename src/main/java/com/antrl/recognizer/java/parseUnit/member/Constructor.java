@@ -18,4 +18,15 @@ public class Constructor extends CommonConstructorMethod {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Constructor{" +
+				"formalParametersList=" + formalParametersList +
+				", annotationsList=" + annotationsList +
+				", accessModifier='" + accessModifier + '\'' +
+				", modifiersList=" + modifiersList +
+				", type='" + type + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }
