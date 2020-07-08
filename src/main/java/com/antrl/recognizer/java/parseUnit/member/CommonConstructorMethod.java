@@ -30,9 +30,6 @@ public abstract class CommonConstructorMethod extends CommonComponent {
 			formalParameter = new FormalParameter();
 			formalParameter.setType(ctx.formalParameterList().formalParameter(i).typeType().getText());
 			formalParameter.setName(ctx.formalParameterList().formalParameter(i).variableDeclaratorId().getText());
-			// System.out.println("Nombre parametro Metodo: "+formalParameter.getName());
-			// System.out.println("Nombre tipo parametro de Metodo:
-			// "+formalParameter.getType());
 			formalParametersList.add(formalParameter);
 
 		}

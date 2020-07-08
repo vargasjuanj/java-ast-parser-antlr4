@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
-
+/*
 	private String  array[];
 	private Domicilio [] arrayDomicilio;
 
@@ -20,11 +20,12 @@ public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>,
 	List<Domicilio> listaDomicilio;
 
 protected Persona persona;
+*/
 
 
 
 
-	/*
+
 	@Bean
 	public void metodoAnotacion(){
 
@@ -55,7 +56,7 @@ public List<Dos> dos;
 			inverseJoinColumns = @JoinColumn(name = "tag_id")
 	)
 	private List<Domicilio> domicilios = new ArrayList<>();
-
+/*
 	List<String> lista = new ArrayList();
 
 	private String nombre;

@@ -39,8 +39,8 @@ public class JavaListener extends JavaParserBaseListener {
 	private boolean isInterface;
 	private ClassDefinition _class = new ClassDefinition();
 	private InterfaceDefinition _interface= new InterfaceDefinition();
-	private List<Annotation> externalAnnotationsList= new ArrayList();
-
+	private List<Annotation> externalAnnotationsList= new ArrayList<>();
+	private List<Annotation> annotationsMemberList= new ArrayList<>();
 
 
 	@Override
@@ -50,14 +50,46 @@ public class JavaListener extends JavaParserBaseListener {
 		_interface.addImport(ctx.qualifiedName().getText());
 	}
 
+	@Override
+	public void enterAnnotation(JavaParser.AnnotationContext ctx) {
+		// TODO Auto-generated method stub
+		super.enterAnnotation(ctx);
+		//anotaciones internas para un metodo o atributo
+		if (ctx.getParent().getParent().getParent().getRuleIndex() == JavaParser.RULE_classBodyDeclaration) {
+			annotationsMemberList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
+		}else if(ctx.getParent().getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){  //Anotaciones externas al tipo clase o interface
+			System.out.println("Anotacion externa");
+			externalAnnotationsList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
+		}else{
+			//para anotación dentro de otra, dentro de un value de un elementValuePair. Queda como value asi como esta
+		}
+	}
+
+	@Override
+	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
+		super.enterClassDeclaration(ctx);
+		isClass=true;
+		_interface.setImportsList(new ArrayList());  //lo seteo porque esto lo comparten tmb
+		_class.setExternalAnnotationsList(externalAnnotationsList);
+		_class.addData(ctx);
+	}
 
 
+	@Override
+	public void enterInterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) {
+		super.enterInterfaceDeclaration(ctx);
+		isInterface=true;
+		_class.setImportsList(new ArrayList());
+		_interface.setExternalAnnotationsList(externalAnnotationsList);
+		_interface.addData(ctx);
+	}
 	public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx
 				.getParent(); // Obtengo el contexto del padre
 		Attribute attribute = new Attribute();
 		attribute.addData(ctxMemberDeclaration);
-
+		attribute.setAnnotationsList(annotationsMemberList);
+		annotationsMemberList= new ArrayList<>();// Se vuelve a inicializar para otro miembro
 		if(isClass){
 			_class.addAttribute(attribute);
 		}else if(isInterface){
@@ -82,6 +114,8 @@ public class JavaListener extends JavaParserBaseListener {
 				.getParent(); // Obtengo el contexto del padre
 		Method method = new Method();
 		method.addData(ctxMemberDeclaration);
+		method.setAnnotationsList(annotationsMemberList);
+		annotationsMemberList= new ArrayList<>();
 		if(isClass){
 			_class.addMethod(method);
 
@@ -89,59 +123,6 @@ public class JavaListener extends JavaParserBaseListener {
 			_interface.addMethod(method);
 		}
 
-	}
-
-/* Se acomodo en base a los atributos
-	@Override
-	public void enterAnnotation(JavaParser.AnnotationContext ctx) {
-		// TODO Auto-generated method stub
-		super.enterAnnotation(ctx);
-		Annotation annotation = new Annotation();
-//if(ctx.getParent().getParent().getParent().getRuleIndex()==JavaParser.RULE_classBodyDeclaration){
-	if(ctx.depth()==8){
-		if(isClass){
-		System.out.println("Anotación Interna1 ");
-		_class.addAnnotation(annotation.addData(ctx));
-
-	}else if(isInterface){
-		System.out.println("Anotación Interna2 ");
-		_interface.addAnnotation(annotation.addData(ctx));
-	}
-
-}
-
-	}
-*/
-	@Override
-	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
-		super.enterClassOrInterfaceModifier(ctx);
-
-		if(ctx.annotation()!=null){ //Si existen anotaciones
-			//Solo para anotaciones externas
-			if(ctx.getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){
-				System.out.println("Anotación externa ");
-				externalAnnotationsList.add(CommonType.addAnnotation(ctx));
-			}
-		}
-	}
-
-	@Override
-	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
-		super.enterClassDeclaration(ctx);
-		isClass=true;
-		_interface.setImportsList(new ArrayList());  //lo seteo porque esto lo comparten tmb
-		_class.setExternalAnnotationsList(externalAnnotationsList);
-		_class.addData(ctx);
-	}
-
-
-	@Override
-	public void enterInterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) {
-		super.enterInterfaceDeclaration(ctx);
-		isInterface=true;
-		_class.setImportsList(new ArrayList());
-		_interface.setExternalAnnotationsList(externalAnnotationsList);
-		_interface.addData(ctx);
 	}
 
 	@Override
