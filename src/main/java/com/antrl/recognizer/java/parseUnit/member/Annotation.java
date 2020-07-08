@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-//@ToString(callSuper = true)
+@ToString(callSuper = true)
 public class Annotation  {
 private String name;
 	List<ElementValuePair> elementValuePairs= new ArrayList();

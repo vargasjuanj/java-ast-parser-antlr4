@@ -6,11 +6,15 @@ import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import com.antrl.recognizer.java.parseUnit.member.ElementValuePair;
 import com.antrl.recognizer.java.parseUnit.member.Method;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
 public abstract class CommonType extends CommonComponent {
 protected String _package;
 

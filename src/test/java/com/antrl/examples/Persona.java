@@ -5,18 +5,37 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Bean;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+
+	private String  array[];
+	private Domicilio [] arrayDomicilio;
+
+	public List<String> lista;
+	List<Domicilio> listaDomicilio;
+
+protected Persona persona;
+
+
+
+
+	/*
+	@Bean
+	public void metodoAnotacion(){
+
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabla_numeros")
 	@TableGenerator(name = "tabla_numeros", table = "NUMEROS", pkColumnName = "tabla", valueColumnName = "numero", pkColumnValue = "r33", allocationSize = 10)
 	@Column(name = "ID_FORMULARIO", length = 10, insertable = true, nullable = false, unique = true, updatable = false)
 	private Long id;
-	/*
+
 	public String algo;
 	@Column(name="cam")
 private String campo;
@@ -38,8 +57,11 @@ public List<Dos> dos;
 	private List<Domicilio> domicilios = new ArrayList<>();
 
 	List<String> lista = new ArrayList();
+
 	private String nombre;
+
 	public static final int numero = 2;
+
 	int edad = 120;
 
 	public Persona() {
@@ -50,6 +72,7 @@ public List<Dos> dos;
 
 	}
 abstract  void prueba();
+
 	public static final void mostrarNombre(String elNombre, int edad) {
 	}
 
@@ -65,5 +88,5 @@ abstract  void prueba();
 		return new Object();
 	}
 
- */
+*/
 }
