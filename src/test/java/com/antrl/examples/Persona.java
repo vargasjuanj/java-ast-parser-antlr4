@@ -14,7 +14,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-public abstract class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+//@Entity Si es entidad en este caso recopila toda la información. Si es abstract se ignora segun las condiciones en el listener
+public  abstract  class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
 /*
 	private String  array[];
 	private Domicilio [] arrayDomicilio;
@@ -29,7 +30,7 @@ protected Persona persona;
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabla_numeros")
 	@TableGenerator(name = "tabla_numeros", table = "NUMEROS", pkColumnName = "tabla", valueColumnName = "numero", pkColumnValue = "r33", allocationSize = 10)
 	@Column(name = "ID_FORMULARIO", length = 10, insertable = true, nullable = false, unique = true, updatable = false)
-	private Long id;
+	private static Long id;
 
 	@OneToOne
 	@JoinColumn(name="one")

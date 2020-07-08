@@ -58,11 +58,12 @@ public class Attribute extends CommonComponent {
 	public String toString() {
 		return "Attribute{" +
 				"typeRelation='" + typeRelation + '\'' +
-				", annotationsList=" + annotationsList +
 				", accessModifier='" + accessModifier + '\'' +
 				", modifiersList=" + modifiersList +
-				", type='" + type + '\'' +
 				", name='" + name + '\'' +
+				", type='" + type + '\'' +
+
+				", annotationsList=" + annotationsList +
 				'}';
 	}
 }

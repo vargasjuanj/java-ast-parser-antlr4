@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.antrl.recognizer.java.JavaParser;
 
-import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import com.antrl.recognizer.java.parseUnit.member.Constructor;
 import com.antrl.recognizer.java.parseUnit.member.Implementation;
 
@@ -15,7 +14,7 @@ import lombok.Data;
 
 @Data
 public class ClassDefinition extends CommonType {
-
+private boolean isEntity;
 	private boolean isAbstract;
 
 	private boolean isFinal;
@@ -127,8 +126,10 @@ public class ClassDefinition extends CommonType {
 		System.out.println("Modificador de Acceso de la clase: " + getAccessModifier());
 		setType(ctx.CLASS().getText());
 		System.out.println("Es una " + ctx.CLASS().getText());
-
-		isAbstractOrFinal();
+		if(isEntity) {
+			System.out.println("Es una Entidad");
+		}
+		isFinal();
 		if(isAbstract()){
 			System.out.println("Es Abstracta " );
 
@@ -136,6 +137,7 @@ public class ClassDefinition extends CommonType {
 			System.out.println("Es Final" );
 
 		}
+
 		setName(ctx.IDENTIFIER().getText());
 		System.out.println("Nombre: " + ctx.IDENTIFIER().getText());
 		addTypeParametersClassDeclaration(ctx);
@@ -145,17 +147,6 @@ public class ClassDefinition extends CommonType {
 
 
 
-	public void isAbstractOrFinal(){
-		for(String modifier : getModifiersList()) {
-			if (modifier.equals("abstract")) {
-				isAbstract = true;
-			}
-			if (modifier.equals(("final"))) {
-				isFinal = true;
-			}
-
-		}
-	}
 
 
 	public void totalize() {

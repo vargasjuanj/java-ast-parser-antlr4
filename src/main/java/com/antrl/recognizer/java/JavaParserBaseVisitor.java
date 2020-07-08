@@ -1,4 +1,4 @@
-// Generated from E:/USUARIO/Documents/Intellij-idea-Projects/SA/src/main/java/grammar\JavaParser.g4 by ANTLR 4.8
+// Generated from E:/USUARIO/Desktop/code-stripper/code-stripper/src/main/java/com/antrl/recognizer/java/grammars\JavaParser.g4 by ANTLR 4.8
 package com.antrl.recognizer.java;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 

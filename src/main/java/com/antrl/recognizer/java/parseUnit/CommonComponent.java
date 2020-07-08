@@ -2,12 +2,10 @@ package com.antrl.recognizer.java.parseUnit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.antrl.recognizer.java.JavaParser;
 
 import com.antrl.recognizer.java.parseUnit.member.Annotation;
-import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import lombok.Data;
 import lombok.ToString;
 
@@ -32,6 +30,7 @@ public abstract class CommonComponent {
 		//System.out.println("ATRIBUTO ANOTACION "+ctxClassOrInterfaceModifier.getChild(0).getText());
 		if (tam == 1) { // Si es uno no tiene ningún modificador, sino otra información del nodo, otro
 						// hijo
+//eje Uno uno;
 	commonComponent.setAccessModifier("");
 
 
@@ -44,8 +43,6 @@ public abstract class CommonComponent {
 
 				if (!modifier.contains("@") && !modifier.contains("final") && !modifier.contains("static") && !modifier.contains("abstract")) {
 					commonComponent.setAccessModifier(verifyAccess(modifier));
-					// System.out.println("Modificador de acceso componente: "+
-					// commonComponent.getAccesModifier());
 					if (!commonComponent.getAccessModifier().equals("")) {
 						continue;
 					}
@@ -61,6 +58,19 @@ if(!modifier.startsWith("@")){
 			}
 
 		}
+
+		//Si el accesModificador quedo null porque no tiene y no entró en las condiciones anteriores, porque interfierieron las anotaciones
+		/*
+		ejemplo:
+			@OneToOne
+			@JoinColumn(name="one")
+			Uno uno;
+		 */
+
+		if(commonComponent.getAccessModifier()==null){
+			commonComponent.setAccessModifier("");
+		}
+
 	}
 
 	// Es el mismo método que el de arriba, el problema es el contexto, la

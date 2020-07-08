@@ -5,7 +5,6 @@ import com.antrl.recognizer.java.parseUnit.member.Annotation;
 import com.antrl.recognizer.java.parseUnit.member.Attribute;
 import com.antrl.recognizer.java.parseUnit.member.ElementValuePair;
 import com.antrl.recognizer.java.parseUnit.member.Method;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

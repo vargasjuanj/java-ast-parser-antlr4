@@ -8,7 +8,6 @@ import com.antrl.recognizer.java.parseUnit.CommonType;
 import com.antrl.recognizer.java.parseUnit.InterfaceDefinition;
 import com.antrl.recognizer.java.parseUnit.member.*;
 import lombok.extern.java.Log;
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +37,9 @@ public class JavaListener extends JavaParserBaseListener {
 	 */
 	private boolean isClass;
 	private boolean isInterface;
+	private boolean isEntity;
+	private boolean isAbstract;
+	private boolean isFinal;
 	private ClassDefinition _class = new ClassDefinition();
 	private InterfaceDefinition _interface= new InterfaceDefinition();
 	private List<Annotation> externalAnnotationsList= new ArrayList<>();
@@ -55,30 +57,56 @@ public class JavaListener extends JavaParserBaseListener {
 	public void enterAnnotation(JavaParser.AnnotationContext ctx) {
 		// TODO Auto-generated method stub
 		super.enterAnnotation(ctx);
+		String nameAnnotation=ctx.qualifiedName().getText();
+
 		//anotaciones internas para un metodo o atributo
 		if (ctx.getParent().getParent().getParent().getRuleIndex() == JavaParser.RULE_classBodyDeclaration) {
 			annotationsMemberList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
-			String nameAnnotation=ctx.qualifiedName().getText();
 			if(nameAnnotation.startsWith("OneTo") || nameAnnotation.startsWith("ManyTo")){
 				typeRelationAux=nameAnnotation;
 			}
 
 
 		}else if(ctx.getParent().getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){  //Anotaciones externas al tipo clase o interface
+			if(nameAnnotation.startsWith("Entity")){
+				isEntity=true;
+			}
 			externalAnnotationsList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
+			
 		}else{
 			//para anotación dentro de otra, dentro de un value de un elementValuePair. Queda como value asi como esta
 		}
 	}
 
+	@Override
+	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
+		super.enterClassOrInterfaceModifier(ctx);
+		if(ctx.getText().equals("abstract")){
+			System.out.println("aca "+ctx.getText());
+			isAbstract=true;
+		}else if(ctx.getText().equals("final")){
+			isFinal=true;
+		}
+	}
 
 	@Override
 	public void enterClassDeclaration(JavaParser.ClassDeclarationContext ctx) {
 		super.enterClassDeclaration(ctx);
-		isClass=true;
-		_interface.setImportsList(new ArrayList());  //lo seteo porque esto lo comparten tmb
-		_class.setExternalAnnotationsList(externalAnnotationsList);
-		_class.addData(ctx);
+	//No se evita que el listener recorra el arbol, pero se evitan las operaciones de extraccion de datos que se hacen en los nodos con los atributos booleanos isClass, isInterface e isEntity
+		isClass = true;
+		if(isEntity){
+			_class.setExternalAnnotationsList(externalAnnotationsList);
+			_interface.setImportsList(new ArrayList());  //lo seteo porque esto lo comparten tmb
+			_interface.setExternalAnnotationsList(new ArrayList<>());
+			_class.addData(ctx);
+			_class.setFinal(true);
+			_class.setEntity(true);
+		}else if(isAbstract){
+		_class.setAbstract(true);
+		}else{
+			_class.setExternalAnnotationsList(new ArrayList<>());
+		}
+
 	}
 
 
@@ -87,6 +115,7 @@ public class JavaListener extends JavaParserBaseListener {
 		super.enterInterfaceDeclaration(ctx);
 		isInterface=true;
 		_class.setImportsList(new ArrayList());
+		_class.setExternalAnnotationsList(new ArrayList<>());
 		_interface.setExternalAnnotationsList(externalAnnotationsList);
 		_interface.addData(ctx);
 	}
@@ -101,7 +130,12 @@ public class JavaListener extends JavaParserBaseListener {
  			typeRelationAux="";
 
 		if(isClass){
-			_class.addAttribute(attribute);
+			if(isEntity){
+				_class.addAttribute(attribute);
+			}else if(isAbstract){
+
+			}
+
 		}else if(isInterface){
 			_interface.addAttribute(attribute);
 		}
@@ -114,12 +148,21 @@ public class JavaListener extends JavaParserBaseListener {
 				.getParent(); // Obtengo el contexto del padre
 		Constructor constructor = new Constructor();
 		constructor.addData(ctxMemberDeclaration);
-		_class.addConstructor(constructor);
+		//if(isEntity || isAbstract){
+		if(isClass){
+			if(isEntity){
+				_class.addConstructor(constructor);
+
+			}else if(isAbstract){
+
+			}
+		}
 
 	}
 
 	@Override
 	public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx
 				.getParent(); // Obtengo el contexto del padre
 		Method method = new Method();
@@ -127,7 +170,12 @@ public class JavaListener extends JavaParserBaseListener {
 		method.setAnnotationsList(annotationsMemberList);
 		annotationsMemberList= new ArrayList<>();
 		if(isClass){
-			_class.addMethod(method);
+			if(isEntity){
+				_class.addMethod(method);
+			}else if(isAbstract){
+				//
+			}
+
 
 		}else if(isInterface){
 			_interface.addMethod(method);
@@ -138,7 +186,12 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void exitCompilationUnit(JavaParser.CompilationUnitContext ctx) {
 		if(isClass){
-			_class.totalize();
+			if(isEntity){
+				_class.totalize();
+
+			}else if(isAbstract){
+
+			}
 		}else if(isInterface){
 			_interface.totalize();
 		}
