@@ -40,6 +40,7 @@ public class JavaListener extends JavaParserBaseListener {
 	private boolean isEntity;
 	private boolean isAbstract;
 	private boolean isFinal;
+	private boolean isFunctional; //para interface funcional
 	private ClassDefinition _class = new ClassDefinition();
 	private InterfaceDefinition _interface= new InterfaceDefinition();
 	private List<Annotation> externalAnnotationsList= new ArrayList<>();
@@ -70,6 +71,8 @@ public class JavaListener extends JavaParserBaseListener {
 		}else if(ctx.getParent().getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration){  //Anotaciones externas al tipo clase o interface
 			if(nameAnnotation.startsWith("Entity")){
 				isEntity=true;
+			}else if(nameAnnotation.startsWith("FunctionalInterface")){
+				isFunctional=true;
 			}
 			externalAnnotationsList.add(CommonType.addAnnotation((JavaParser.ClassOrInterfaceModifierContext) ctx.getParent()));
 			
@@ -119,7 +122,10 @@ public class JavaListener extends JavaParserBaseListener {
 		_class.setImportsList(new ArrayList());
 		_class.setExternalAnnotationsList(new ArrayList<>());
 		_interface.setExternalAnnotationsList(externalAnnotationsList);
+		_interface.setFunctional(isFunctional);
 		_interface.addData(ctx);
+
+
 	}
 	public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx

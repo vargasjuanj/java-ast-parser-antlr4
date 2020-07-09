@@ -5,8 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Id;
-
+//@FunctionalInterface
 public interface IComportamiento<Uno,Dos> extends  JpaTest {
 
 //public void algo();
+    String asdf = null;
 }

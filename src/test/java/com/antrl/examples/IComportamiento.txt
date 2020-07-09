@@ -5,7 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Id;
-@Repository
+
+@FunctionalInterface
 public interface IComportamiento<Uno,Dos> extends JpaRepository<Domicilio,Integer>, JpaTest {
     //Por defecto las variables de una interfaz son estaticas , publicas y finales
     //Formalmente una interfaz funcional se identifica con la anotacion @FunctionalInterface, y debe contener un unico metodo abstracto y todos los defaults que se quiera  y variables
@@ -13,5 +14,5 @@ public interface IComportamiento<Uno,Dos> extends JpaRepository<Domicilio,Intege
     //El Método abstracto unico en una interfaz funcional sirve para que a una firma de una función se le pueda rellenar el cuerpo en una clase que la implemente de la forma que se quiera, pero utilizando expresiones lambda ..
     //.. en distintas lineas se puede almacenar en una variable del tipo de la interfaz un cuerpo distinto para una misma firma de función
 
-//public void algo();
+public void algo();
 }

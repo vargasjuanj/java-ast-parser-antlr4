@@ -1,6 +1,7 @@
 package com.antrl.recognizer.java.parseUnit;
 
 import com.antrl.recognizer.java.JavaParser;
+import com.antrl.recognizer.java.parseUnit.member.Method;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Data
 public class InterfaceDefinition extends CommonType{
-
+private boolean isFunctional;
     public void addData(JavaParser.InterfaceDeclarationContext ctx) {
         set_package(ctx.getParent().getParent().getChild(0).getText().replaceFirst("package",""));
         System.out.println("Paquete: " + get_package());
@@ -17,30 +18,23 @@ public class InterfaceDefinition extends CommonType{
         System.out.println("Modificador de Acceso de la clase: " + getAccessModifier());
         setType("interface");
         System.out.println("Es una Interfaz");
-/*
-        isFunctional();
+
+
 
         if(isFunctional){
             System.out.println("Es Funcional " );
 
         }else {
-            System.out.println("Es Comun" );
+            System.out.println("No es Funcional" );
 
         }
-*/
+
         setName(ctx.IDENTIFIER().getText());
         System.out.println("Nombre: " + ctx.IDENTIFIER().getText());
         addTypeParametersInterfaceDeclaration(ctx);
         addImplementationsOrExtendsList(ctx.typeList());
     }
-/*
-    private void isFunctional() {
 
-        if(isFunctional || haveOneAbstractMethod) {
-            isFunctional=true;
-        }
-    }
-*/
     public void totalize() {
 
         System.out.println("\n -------- TOTALIZACIÓN ----------");
