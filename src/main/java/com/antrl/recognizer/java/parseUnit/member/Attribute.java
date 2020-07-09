@@ -12,23 +12,28 @@ import lombok.ToString;
 public class Attribute extends CommonComponent {
 	private String structure="";
 	private String typeRelation="";
-    private String value=""; //para constantes
-	public void addData(JavaParser.MemberDeclarationContext ctx) {
+    private Object value="";
+	public void addData(JavaParser.VariableDeclaratorContext ctx) {
 
-		name = ctx.fieldDeclaration().variableDeclarators().variableDeclarator(0).variableDeclaratorId().getText();
+		name = ctx.variableDeclaratorId().getText();
+		try{
+            value=ctx.variableInitializer().getText();
+        }catch (Exception e){
+
+        }
 
 		if (name.contains("[]")) { // La gramatica tiene una pequeña deficiencia, si los corchetes estan a la
 									// derecha del nombre, los toma como parte del nombre del atributo.
 			structure="Array";
 			name = name.replace("[]", "");
-			type = ctx.fieldDeclaration().typeType().getText(); // Extraigo toda la data del nodo typeType, puede
+			type = ctx.getParent().getParent().getChild(0).getText();
 
-																// generico o clases parametrizadas dentro de una lista// ej. List<Algo<String,Object>>;
+
 			//type += "[]"; // formo el tipo completo
 
 		} else {
 
-			type = ctx.fieldDeclaration().typeType().getText();
+			type = ctx.getParent().getParent().getChild(0).getText();
 			if(type.contains("[]"))	{
 				type=type.replace("[]","");
 				// agarrar tanto una lista, array , tipo simple, el tipo
@@ -41,7 +46,8 @@ public class Attribute extends CommonComponent {
 
 		}
 
-		addModifiersMemberDeclaration(this, ctx);
+		//Lo casteo al MemberDeclarationContext, porque se reutiliza un metodo apra atributos, metodos y constructores de clase.
+		addModifiersMemberDeclaration(this, (JavaParser.MemberDeclarationContext) ctx.getParent().getParent().getParent());
 	}
 	public void selectTypeRelation(String nameAnnotation) {
 		if(nameAnnotation.startsWith("OneToOne")){
@@ -62,6 +68,7 @@ public class Attribute extends CommonComponent {
 				", modifiersList=" + modifiersList +
 				", name='" + name + '\'' +
 				", type='" + type + '\'' +
+                ", value='" + value + '\'' +
 
 				", annotationsList=" + annotationsList +
 				'}';

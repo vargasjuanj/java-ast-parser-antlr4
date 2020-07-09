@@ -114,7 +114,31 @@ public class JavaListener extends JavaParserBaseListener {
 
 	}
 
+	@Override
+	public void enterVariableDeclarator(JavaParser.VariableDeclaratorContext ctx) {
+		super.enterVariableDeclarator(ctx);
+		//JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx
+			//	.getParent().getParent().getParent();
 
+		Attribute attribute = new Attribute();
+		attribute.addData(ctx);
+		attribute.setAnnotationsList(annotationsMemberList);
+		annotationsMemberList= new ArrayList<>();// Se vuelve a inicializar para otro miembro
+		attribute.selectTypeRelation(typeRelationAux);
+		typeRelationAux="";
+
+		if(isClass){
+			if(isEntity){
+				_class.addAttribute(attribute);
+			}else if(isAbstract){
+
+			}
+
+		}else if(isInterface){
+			_interface.addAttribute(attribute);
+		}
+	}
+/*
 	public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx
 				.getParent(); // Obtengo el contexto del padre
@@ -137,7 +161,7 @@ public class JavaListener extends JavaParserBaseListener {
 		}
 
 	}
-
+*/
 	@Override
 	public void enterConstructorDeclaration(JavaParser.ConstructorDeclarationContext ctx) {
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx

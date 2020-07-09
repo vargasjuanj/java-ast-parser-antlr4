@@ -16,6 +16,12 @@ import javax.persistence.*;
 @Setter
 @Entity //Si es entidad en este caso recopila toda la información. Si es abstract se ignora segun las condiciones en el listener
 public  final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+
+	String uno1="1",dos2="2";
+	int tres=3,cuatro=4,cinco=5;
+	boolean verdad=true, mentira=false;
+	String a=new String("2");
+
 /*
 	private String  array[];
 	private Domicilio [] arrayDomicilio;
@@ -24,20 +30,21 @@ public  final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, J
 	List<Domicilio> listaDomicilio;
 
 protected Persona persona;
-*/
+
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "tabla_numeros")
 	@TableGenerator(name = "tabla_numeros", table = "NUMEROS", pkColumnName = "tabla", valueColumnName = "numero", pkColumnValue = "r33", allocationSize = 10)
 	@Column(name = "ID_FORMULARIO", length = 10, insertable = true, nullable = false, unique = true, updatable = false)
-	private static Long id;
+	private static Long id=10l;
 
 	@OneToOne
 	@JoinColumn(name="one")
 Uno uno;
 
 @OneToMany
-public List<Dos> dos;
+public List<Dos> dos= new ArrayList<>();
 
 
 	@NotFound(action = NotFoundAction.IGNORE)
@@ -61,8 +68,7 @@ public Persona(){
 	@Bean
 	public void metodoAnotacion(){}
 
-/*
-	List<String> lista = new ArrayList();
+
 
 	private String nombre;
 
@@ -70,14 +76,12 @@ public Persona(){
 
 	int edad = 120;
 
-	public Persona() {
 
-	}
 
 	protected Persona(int one, Double two) {
 
 	}
-abstract  void prueba();
+
 
 	public static final void mostrarNombre(String elNombre, int edad) {
 	}
@@ -93,6 +97,6 @@ abstract  void prueba();
 	protected Object escuchar(String mensaje) {
 		return new Object();
 	}
-*/
 
+*/
 }

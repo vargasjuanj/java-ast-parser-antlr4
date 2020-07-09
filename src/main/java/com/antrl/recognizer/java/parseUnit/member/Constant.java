@@ -9,7 +9,7 @@ import lombok.ToString;
 public class Constant {
     private String type="";
     private String name="";
-    private Object value=new Object();
+    private Object value;
 
     public void addData(JavaParser.ConstantDeclaratorContext ctx) {
     type=ctx.getParent().getChild(0).getText();
