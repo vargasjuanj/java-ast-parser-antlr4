@@ -6,7 +6,6 @@ import java.util.List;
 import com.antrl.recognizer.java.JavaParser;
 
 import com.antrl.recognizer.java.parseUnit.member.Constructor;
-import com.antrl.recognizer.java.parseUnit.member.Implementation;
 
 
 import lombok.Data;
@@ -21,8 +20,6 @@ private boolean isEntity;
 
 
 	private String _extends;
-
-	private List<Implementation> implementationsList = new ArrayList<>();
 
 
 	private List<Constructor> constructorsList = new ArrayList<>();
@@ -47,74 +44,7 @@ private boolean isEntity;
 		}
 	}
 
-	public void addImplementations(JavaParser.ClassDeclarationContext ctx) {
-		Implementation implementation = null;
-		String name = "";
 
-		try {
-			// if (ctx.typeList().typeType() != null) { //con .equals no funciona
-			int tam = ctx.typeList().typeType().size();
-			for (int i = 0; i < tam; i++) {
-				implementation = new Implementation();
-				name = ctx.typeList().typeType().get(i).classOrInterfaceType().IDENTIFIER().get(0).getText(); // Debo
-																												// tomar
-																												// el
-																												// indice
-																												// cero
-																												// porque
-																												// como
-																												// todas
-																												// las
-																												// producciones
-																												// se
-																												// usan
-																												// para
-																												// otras
-																												// cosas,
-																												// classOrInterfaceType
-																												// no es
-																												// la
-																												// excepcion,
-																												// esta
-																												// produccion
-																												// tes
-																												// un
-																												// array
-																												// de
-																												// identificadores.
-				implementation.setName(name);
-				// System.out.println("nombre imple "+name);
-				int tam2 = 0;
-				// if (ctx.typeList().typeType().get(i).classOrInterfaceType().typeArguments(0)
-				// != null) { //debo comprobar que tenga algo sino me salta el null pointer
-				tam2 = ctx.typeList().typeType().get(i).classOrInterfaceType().typeArguments(0).typeArgument().size();
-
-				// }
-				for (int j = 0; j < tam2; j++) {
-					String typeArgument = ctx.typeList().typeType().get(i).classOrInterfaceType().typeArguments(0)
-							.typeArgument().get(j).getText();
-					implementation.addTypeArgument(typeArgument);
-					// System.out.println(typeArgument);
-
-				}
-
-				implementationsList.add(implementation);
-				System.out.println(implementation.toString());
-
-			}
-
-			// }
-
-		} catch (Exception e) {
-			if (!name.equals("")) {
-				implementationsList.add(implementation); // añade una implementación no parametrizada, solo el nombre,
-															// es para cuando mas arriba salta el error
-				System.out.println(implementation.toString());
-
-			} else
-				System.out.println("no hay implementación");
-		}
-	}
 
 	// Este data odria ser sobre cargado para las interfaces o enum, si no ver la
 	// navegación, mas adelante
@@ -142,7 +72,7 @@ private boolean isEntity;
 		System.out.println("Nombre: " + ctx.IDENTIFIER().getText());
 		addTypeParametersClassDeclaration(ctx);
 		addExtend(ctx);
-		addImplementations(ctx);
+		addImplementationsOrExtendsList(ctx.typeList());
 	}
 
 
@@ -154,7 +84,7 @@ private boolean isEntity;
 		System.out.println("\n -------- TOTALIZACIÓN ----------");
 		System.out.println(importsList.size() + " importaciones");
 		System.out.println(typeParametersList.size() + " parametros de clase");
-		System.out.println(implementationsList.size() + " implementaciones");
+		System.out.println(implementationOrExtendsList.size() + " implementaciones");
 		System.out.println(attributesList.size() + " atributos");
 		System.out.println(constructorsList.size() + " constructores");
 

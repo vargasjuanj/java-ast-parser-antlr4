@@ -14,8 +14,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-//@Entity Si es entidad en este caso recopila toda la información. Si es abstract se ignora segun las condiciones en el listener
-public  abstract  class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
+@Entity //Si es entidad en este caso recopila toda la información. Si es abstract se ignora segun las condiciones en el listener
+public  final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
 /*
 	private String  array[];
 	private Domicilio [] arrayDomicilio;

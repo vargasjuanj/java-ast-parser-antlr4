@@ -1,10 +1,7 @@
 package com.antrl.recognizer.java.parseUnit;
 
 import com.antrl.recognizer.java.JavaParser;
-import com.antrl.recognizer.java.parseUnit.member.Annotation;
-import com.antrl.recognizer.java.parseUnit.member.Attribute;
-import com.antrl.recognizer.java.parseUnit.member.ElementValuePair;
-import com.antrl.recognizer.java.parseUnit.member.Method;
+import com.antrl.recognizer.java.parseUnit.member.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +19,7 @@ protected String _package;
   protected List<Method> methodsList = new ArrayList<>();
 protected List<Annotation> externalAnnotationsList= new ArrayList();
 
+protected List<ImplementationOrExtends> implementationOrExtendsList= new ArrayList();
    protected List<String> typeParametersList = new ArrayList<>(); // Parametrización de la clase, si es q lo es.
     public static Annotation addAnnotation(JavaParser.ClassOrInterfaceModifierContext ctx) {
             Annotation annotation= new Annotation();
@@ -111,6 +109,74 @@ public void addTypeParameters(List<JavaParser.TypeParameterContext> typeParamete
 
 
 }
+    public void addImplementationsOrExtendsList(JavaParser.TypeListContext typeListContext) {
+   ImplementationOrExtends implementationOrExtends = null;
+        String name = "";
+
+        try {
+            // if (ctx.typeList().typeType() != null) { //con .equals no funciona
+            int tam = typeListContext.typeType().size();
+            for (int i = 0; i < tam; i++) {
+                implementationOrExtends = new ImplementationOrExtends();
+                name = typeListContext.typeType().get(i).classOrInterfaceType().IDENTIFIER().get(0).getText(); // Debo
+                // tomar
+                // el
+                // indice
+                // cero
+                // porque
+                // como
+                // todas
+                // las
+                // producciones
+                // se
+                // usan
+                // para
+                // otras
+                // cosas,
+                // classOrInterfaceType
+                // no es
+                // la
+                // excepcion,
+                // esta
+                // produccion
+                // tes
+                // un
+                // array
+                // de
+                // identificadores.
+                implementationOrExtends.setName(name);
+                // System.out.println("nombre imple "+name);
+                int tam2 = 0;
+                // if (ctx.typeList().typeType().get(i).classOrInterfaceType().typeArguments(0)
+                // != null) { //debo comprobar que tenga algo sino me salta el null pointer
+                tam2 = typeListContext.typeType().get(i).classOrInterfaceType().typeArguments(0).typeArgument().size();
+
+                // }
+                for (int j = 0; j < tam2; j++) {
+                    String typeArgument = typeListContext.typeType().get(i).classOrInterfaceType().typeArguments(0)
+                            .typeArgument().get(j).getText();
+                    implementationOrExtends.addTypeArgument(typeArgument);
+                    // System.out.println(typeArgument);
+
+                }
+
+                implementationOrExtendsList.add(implementationOrExtends);
+                System.out.println(implementationOrExtends.toString());
+
+            }
+
+            // }
+
+        } catch (Exception e) {
+            if (!name.equals("")) {
+                implementationOrExtendsList.add(implementationOrExtends); // añade una implementación no parametrizada, solo el nombre,
+                // es para cuando mas arriba salta el error
+                System.out.println(implementationOrExtends.toString());
+
+            } else
+                System.out.println("no hay implementación de clase, o extends de interface");
+        }
+    }
     abstract void totalize();
 
 }

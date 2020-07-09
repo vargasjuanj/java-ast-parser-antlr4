@@ -8,45 +8,49 @@ import java.util.List;
 
 @Data
 public class InterfaceDefinition extends CommonType{
-    private List<String> extendsList= new ArrayList();
+
     public void addData(JavaParser.InterfaceDeclarationContext ctx) {
         set_package(ctx.getParent().getParent().getChild(0).getText().replaceFirst("package",""));
         System.out.println("Paquete: " + get_package());
 
         addModifierInterfaceDeclaration(this, ctx);
-        if(getAccessModifier()==null){
-            setAccessModifier("");
-        }
-        System.out.println("Modificador de Acceso de la interface: " + getAccessModifier());
+        System.out.println("Modificador de Acceso de la clase: " + getAccessModifier());
+        setType("interface");
+        System.out.println("Es una Interfaz");
+/*
+        isFunctional();
 
+        if(isFunctional){
+            System.out.println("Es Funcional " );
+
+        }else {
+            System.out.println("Es Comun" );
+
+        }
+*/
         setName(ctx.IDENTIFIER().getText());
         System.out.println("Nombre: " + ctx.IDENTIFIER().getText());
         addTypeParametersInterfaceDeclaration(ctx);
-        //addExtend(ctx);
-        //addImplementations(ctx);
+        addImplementationsOrExtendsList(ctx.typeList());
     }
+/*
+    private void isFunctional() {
 
-
-
-
-    public void addExtend(JavaParser.InterfaceDeclarationContext ctx) {
-        if(ctx.typeList().typeType().size()>=1){
-            for (int i=0; i<ctx.typeList().typeType().size(); i++){
-                extendsList.add(ctx.typeList().typeType().get(i).classOrInterfaceType().getText());
-                System.out.println("Extiende de " + ctx.typeList().typeType().get(i).classOrInterfaceType().getText());
-
-            }
+        if(isFunctional || haveOneAbstractMethod) {
+            isFunctional=true;
         }
     }
+*/
     public void totalize() {
 
         System.out.println("\n -------- TOTALIZACIÓN ----------");
         System.out.println(importsList.size() + " importaciones");
         System.out.println(typeParametersList.size() + " parametros de interface");
-        // System.out.println(implementationsList.size() + " implementaciones");
+        System.out.println(implementationOrExtendsList.size() + " extends");
         System.out.println(attributesList.size() + " atributos");
         System.out.println(methodsList.size() + " metodos");
         System.out.println(externalAnnotationsList.size() + " anotaciones externas");
+
     }
 
 }

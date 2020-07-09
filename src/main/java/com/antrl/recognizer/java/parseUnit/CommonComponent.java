@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public abstract class CommonComponent {
 	protected List<Annotation> annotationsList = new ArrayList<>();
-	protected String accessModifier;
+	protected String accessModifier="";
 	protected List<String> modifiersList = new ArrayList();  //para atributos
 	protected String type;
 	protected String name;
@@ -105,9 +105,19 @@ if(!modifier.startsWith("@")){
 	public static void addModifierInterfaceDeclaration(CommonComponent commonComponent,
 											 JavaParser.InterfaceDeclarationContext ctx) {
 		int tam = ctx.getParent().children.size();
-		if (tam ==2) {
-			commonComponent.setAccessModifier("public");
+		//Si lleva public, el penultimo hijo de typeDeclaration es ese modificador
+
+		//Si no lleva modificador , ni anotaciones solo tiene un hijo, por eso salta en null pointer, entre el try/catch
+		JavaParser.ClassOrInterfaceModifierContext ctxAux= (JavaParser.ClassOrInterfaceModifierContext) ctx.getParent().getChild(tam-2);
+		try {
+			//puede tener mas de un hijo y ser una anotacion, por eso la validacion
+			if (ctxAux.getText().equals("public")) {
+				commonComponent.setAccessModifier("public");
+			}
+		}catch(Exception e){
+			commonComponent.setAccessModifier("");
 		}
+
 	}
 
 

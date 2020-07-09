@@ -81,11 +81,13 @@ public class JavaListener extends JavaParserBaseListener {
 	@Override
 	public void enterClassOrInterfaceModifier(JavaParser.ClassOrInterfaceModifierContext ctx) {
 		super.enterClassOrInterfaceModifier(ctx);
-		if(ctx.getText().equals("abstract")){
-			System.out.println("aca "+ctx.getText());
-			isAbstract=true;
-		}else if(ctx.getText().equals("final")){
-			isFinal=true;
+		if(ctx.getParent().getRuleIndex()==JavaParser.RULE_typeDeclaration) {
+			if (ctx.getText().equals("abstract")) {
+				System.out.println("aca " + ctx.getText());
+				isAbstract = true;
+			} else if (ctx.getText().equals("final")) {
+				isFinal = true;
+			}
 		}
 	}
 
@@ -99,8 +101,8 @@ public class JavaListener extends JavaParserBaseListener {
 			_interface.setImportsList(new ArrayList());  //lo seteo porque esto lo comparten tmb
 			_interface.setExternalAnnotationsList(new ArrayList<>());
 			_class.addData(ctx);
-			_class.setFinal(true);
-			_class.setEntity(true);
+			_class.setEntity(isEntity);
+			_class.setFinal(isFinal);
 		}else if(isAbstract){
 		_class.setAbstract(true);
 		}else{
