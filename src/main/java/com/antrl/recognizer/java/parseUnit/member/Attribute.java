@@ -12,7 +12,7 @@ import lombok.ToString;
 public class Attribute extends CommonComponent {
 	private String structure="";
 	private String typeRelation="";
-
+    private String value=""; //para constantes
 	public void addData(JavaParser.MemberDeclarationContext ctx) {
 
 		name = ctx.fieldDeclaration().variableDeclarators().variableDeclarator(0).variableDeclaratorId().getText();

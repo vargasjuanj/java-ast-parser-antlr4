@@ -1,6 +1,7 @@
 package com.antrl.recognizer.java.parseUnit;
 
 import com.antrl.recognizer.java.JavaParser;
+import com.antrl.recognizer.java.parseUnit.member.Constant;
 import com.antrl.recognizer.java.parseUnit.member.Method;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 public class InterfaceDefinition extends CommonType{
 private boolean isFunctional;
+private List<Constant> constantsList= new ArrayList();
     public void addData(JavaParser.InterfaceDeclarationContext ctx) {
         set_package(ctx.getParent().getParent().getChild(0).getText().replaceFirst("package",""));
         System.out.println("Paquete: " + get_package());
@@ -41,7 +43,7 @@ private boolean isFunctional;
         System.out.println(importsList.size() + " importaciones");
         System.out.println(typeParametersList.size() + " parametros de interface");
         System.out.println(implementationOrExtendsList.size() + " extends");
-        System.out.println(attributesList.size() + " atributos");
+        System.out.println(constantsList.size() + " constantes");
         System.out.println(methodsList.size() + " metodos");
         System.out.println(externalAnnotationsList.size() + " anotaciones externas");
 

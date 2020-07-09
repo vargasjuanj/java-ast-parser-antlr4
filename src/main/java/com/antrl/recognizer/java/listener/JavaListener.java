@@ -115,18 +115,6 @@ public class JavaListener extends JavaParserBaseListener {
 	}
 
 
-	@Override
-	public void enterInterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) {
-		super.enterInterfaceDeclaration(ctx);
-		isInterface=true;
-		_class.setImportsList(new ArrayList());
-		_class.setExternalAnnotationsList(new ArrayList<>());
-		_interface.setExternalAnnotationsList(externalAnnotationsList);
-		_interface.setFunctional(isFunctional);
-		_interface.addData(ctx);
-
-
-	}
 	public void enterFieldDeclaration(JavaParser.FieldDeclarationContext ctx) {
 		JavaParser.MemberDeclarationContext ctxMemberDeclaration = (JavaParser.MemberDeclarationContext) ctx
 				.getParent(); // Obtengo el contexto del padre
@@ -189,6 +177,29 @@ public class JavaListener extends JavaParserBaseListener {
 			_interface.addMethod(method);
 		}
 
+	}
+
+	@Override
+	public void enterInterfaceDeclaration(JavaParser.InterfaceDeclarationContext ctx) {
+		super.enterInterfaceDeclaration(ctx);
+		isInterface=true;
+		_class.setImportsList(new ArrayList());
+		_class.setExternalAnnotationsList(new ArrayList<>());
+		_interface.setExternalAnnotationsList(externalAnnotationsList);
+		_interface.setFunctional(isFunctional);
+		_interface.addData(ctx);
+
+
+	}
+
+
+	@Override
+	public void enterConstantDeclarator(JavaParser.ConstantDeclaratorContext ctx) {
+		super.enterConstantDeclarator(ctx);
+		Constant constant = new Constant();
+		constant.addData(ctx);
+		System.out.println(	constant.toString());
+		_interface.getConstantsList().add(constant);
 	}
 
 	@Override
