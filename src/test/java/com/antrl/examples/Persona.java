@@ -17,6 +17,14 @@ import javax.persistence.*;
 @Entity //Si es entidad en este caso recopila toda la información. Si es abstract se ignora segun las condiciones en el listener
 public  final class Persona<A, B> extends Animal implements JpaMock<Uno, Dos>, JpaTest {
 
+	//private final static int one=1,two=2;
+
+	static{
+		int a=3;
+		double b=2.0;
+	}
+
+	/*
 	String uno1="1",dos2="2";
 	int tres=3,cuatro=4,cinco=5;
 	boolean verdad=true, mentira=false;

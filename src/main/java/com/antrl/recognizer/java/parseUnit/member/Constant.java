@@ -23,10 +23,14 @@ public class Constant {
     private void selectStructure(JavaParser.ConstantDeclaratorContext ctx) {
         if(ctx.getChildCount()>3){
             structure="Array";
+            type=type.replace("[]","");
         }else if(type.startsWith("List<")){
             structure="List";
+            type=type.replaceFirst("List<","") .replaceFirst(">","");
+
         }else if(type.contains("[]")){
             structure="Array";
+            type=type.replace("[]","");
         }
     }
 }

@@ -16,6 +16,7 @@ import java.util.List;
 @ToString(callSuper = true)
 public class Annotation  {
 private String name;
+static  int a,b;
 	List<ElementValuePair> elementValuePairs= new ArrayList();
 	List<String> elementValueArrayInitializer= new ArrayList();
 	public Annotation addData(JavaParser.AnnotationContext ctx) {
