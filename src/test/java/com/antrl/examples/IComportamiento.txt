@@ -16,7 +16,6 @@ public interface IComportamiento<Uno,Dos> extends JpaRepository<Domicilio,Intege
 
 //public void algo();
 
-String uno="1",dos="2";
 int tres=3,cuatro=4,cinco=5;
 boolean verdad=true, mentira=false;
 String a=new String("2");

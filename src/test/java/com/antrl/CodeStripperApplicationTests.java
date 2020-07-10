@@ -25,7 +25,7 @@ class CodeStripperApplicationTests {
 		String inputFile = null;
 
 		// Fuerza la carga del fichero de pruebas
-		inputFile = "src/test/java/com/antrl/examples/Persona.java";
+		inputFile = "src/test/java/com/antrl/examples/IComportamiento.java";
 
 		InputStream is = System.in;
 		if (inputFile != null)

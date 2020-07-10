@@ -17,7 +17,7 @@ private List<Constant> constantsList= new ArrayList();
         System.out.println("Paquete: " + get_package());
 
         addModifierInterfaceDeclaration(this, ctx);
-        System.out.println("Modificador de Acceso de la clase: " + getAccessModifier());
+        System.out.println("Modificador de Acceso de la interfaz: " + getAccessModifier());
         setType("interface");
         System.out.println("Es una Interfaz");
 
