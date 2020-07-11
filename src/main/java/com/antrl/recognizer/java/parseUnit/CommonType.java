@@ -62,13 +62,25 @@ return annotation;
 
     public void addAttribute(Attribute attribute) {
             attributesList.add(attribute);
-        System.out.println(attribute.toString());
-
+        System.out.println("*Atributo");
+        System.out.println("\tnombre: "+attribute.getName());
+        System.out.println("\ttipo: "+attribute.getType());
+        System.out.println("\tvisibilidad: "+attribute.getAccessModifier());
+        System.out.println("\testructura: "+attribute.getStructure());
+        System.out.println("\totros modificadores: "+attribute.getModifiersList());
 
     }
     public void addMethod(Method method) {
-        System.out.println(method.toString());
+
+
         methodsList.add(method);
+        System.out.println("*Método");
+        System.out.println("\tnombre: "+method.getName());
+        System.out.println("\tvisibilidad: "+method.getAccessModifier());
+        System.out.println("\tmodificadores: "+method.getModifiersList());
+        System.out.println("\tretorno: "+method.getType());
+        System.out.println("\targumentos: "+method.getFormalParametersList());
+
     }
     public void addImport(String _import) {
         importsList.add(_import);
@@ -81,7 +93,7 @@ return annotation;
            addTypeParameters(ctx.typeParameters().typeParameter());
 
        }catch(Exception e){
-           System.out.println("no hay parametrización");
+           //System.out.println("no hay parametrización");
        }
 
     }
@@ -90,7 +102,7 @@ return annotation;
             addTypeParameters(ctx.typeParameters().typeParameter());
 
         }catch(Exception e){
-            System.out.println("no hay parametrización");
+            //System.out.println("no hay parametrización");
         }
 
     }
@@ -101,7 +113,7 @@ public void addTypeParameters(List<JavaParser.TypeParameterContext> typeParamete
         int tam = typeParameterContexts.size();
         for (int i = 0; i < tam; i++) {
             String parameter =  typeParameterContexts.get(i).IDENTIFIER().getText();
-            System.out.println("Tiene un parametro de tipo: " + parameter);
+            //System.out.println("Tiene un parametro de tipo: " + parameter);
             typeParametersList.add(parameter);
         }
 
@@ -161,7 +173,7 @@ public void addTypeParameters(List<JavaParser.TypeParameterContext> typeParamete
                 }
 
                 implementationOrExtendsList.add(implementationOrExtends);
-                System.out.println(implementationOrExtends.toString());
+               // System.out.println(implementationOrExtends.toString());
 
             }
 
@@ -171,10 +183,11 @@ public void addTypeParameters(List<JavaParser.TypeParameterContext> typeParamete
             if (!name.equals("")) {
                 implementationOrExtendsList.add(implementationOrExtends); // añade una implementación no parametrizada, solo el nombre,
                 // es para cuando mas arriba salta el error
-                System.out.println(implementationOrExtends.toString());
+                //System.out.println(implementationOrExtends.toString());
 
-            } else
-                System.out.println("no hay implementación de clase, o extends de interface");
+            } else{
+                //                System.out.println("no hay implementación de clase, o extends de interface");
+            }
         }
     }
     abstract void totalize();

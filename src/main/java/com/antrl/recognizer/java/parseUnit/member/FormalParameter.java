@@ -4,9 +4,15 @@ import lombok.Data;
 import lombok.ToString;
 
 @Data
-@ToString()
+//@ToString()
 public class FormalParameter {
 	private String type;
 	private String name;
 
+	@Override
+	public String toString() {
+		return "{ type='" + type + '\'' +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

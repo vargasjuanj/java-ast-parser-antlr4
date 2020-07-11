@@ -6,6 +6,8 @@ import com.antrl.recognizer.java.parseUnit.CommonComponent;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Objects;
+
 
 @Data
 //@ToString(callSuper = true)
@@ -72,5 +74,21 @@ public class Attribute extends CommonComponent {
 
 				", annotationsList=" + annotationsList +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Attribute)) return false;
+		if (!super.equals(o)) return false;
+		Attribute attribute = (Attribute) o;
+		return Objects.equals(getStructure(), attribute.getStructure()) &&
+				Objects.equals(getTypeRelation(), attribute.getTypeRelation()) &&
+				Objects.equals(getValue(), attribute.getValue());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), getStructure(), getTypeRelation(), getValue());
 	}
 }
